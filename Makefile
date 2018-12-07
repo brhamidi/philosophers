@@ -6,15 +6,15 @@
 #    By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/20 19:05:42 by bhamidi           #+#    #+#              #
-#    Updated: 2018/06/30 13:25:40 by bhamidi          ###   ########.fr        #
+#    Updated: 2018/12/07 16:29:52 by msrun            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC	= gcc
 NAME	= philo
-CFLAGS	= -Werror -Wextra -Wall-O2
-CFLAGS	= -O2
-CFLAGS	= -pthread
+CFLAGS	= -Werror -Wextra -Wall
+CFLAGS	+= -O2
+# CFLAGS	+= -pthread
 
 SRC_PATH	= srcs/
 INCLUDE_PATH	= includes/
