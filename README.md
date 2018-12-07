@@ -1,2 +1,2 @@
 # philosophers
-Understand threads and mutex via a C program
+Understand threads and mutex through famous the famous problem of philosophers' dinner
