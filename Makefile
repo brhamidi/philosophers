@@ -14,7 +14,7 @@ CC	= gcc
 NAME	= philo
 CFLAGS	= -Werror -Wextra -Wall
 CFLAGS	+= -O2
-# CFLAGS	+= -pthread
+CFLAGS	+= -pthread
 
 SRC_PATH	= srcs/
 INCLUDE_PATH	= includes/
