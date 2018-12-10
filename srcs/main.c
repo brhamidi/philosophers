@@ -6,66 +6,68 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 15:46:42 by msrun             #+#    #+#             */
-/*   Updated: 2018/12/07 18:48:36 by msrun            ###   ########.fr       */
+/*   Updated: 2018/12/10 13:18:14 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-t_philosophers		g_philos[7];
-t_chopstick			g_chops[7];
-int					active;
+int		g_active;
 
 void	*start_dinner(void *arg)
 {
-	const int index = (arg - (void*)g_philos) / sizeof(g_philos[0]);
-	(void)index;
+	const t_philosophers *philo = (t_philosophers *)arg;
+
+	printf("%zu\n", philo->hp);
 	return (NULL);
 }
 
-int		init_philos(void)
+int		init_philos(t_chopstick *chops, t_philosophers *philos)
 {
-	unsigned long	i;
-	int				code;
+	int	i;
+	int	code;
 
 	code = 0;
 	i = 0;
-	while (i < (sizeof(g_philos) / sizeof(g_philos[0])))
+	while (i < PHILO_LEN)
 	{
-		g_philos[i].state = RESTING;
-		g_philos[i].hp = MAX_LIFE;
-		code |= pthread_create(&g_philos[i].thread, NULL, start_dinner, &g_philos[i]);
+		philos[i].state = RESTING;
+		philos[i].hp = MAX_LIFE;
+		philos[i].chopstick_left = chops + i;
+		philos[i].chopstick_right = &chops[i + 1 == PHILO_LEN ? 0 : i + 1];
+		code |= pthread_create(&philos[i].thread, NULL, start_dinner, philos + i);
 		++i;
 	}
 	return (code);
 }
 
-int		init_chops(void)
+int		init_chops(t_chopstick *chops)
 {
 	unsigned long	i;
 	int				code;
 
 	code = 0;
 	i = 0;
-	while (i < (sizeof(g_chops) / sizeof(g_chops[0])))
+	while (i < PHILO_LEN)
 	{
-		g_chops[i].philo_index = -1;
-		code |= pthread_mutex_init(&g_chops[i].mutex, NULL);
+		chops[i].philo_index = -1;
+		code |= pthread_mutex_init(&chops[i].mutex, NULL);
 		++i;
 	}
 	return (code);
 }
 
-int		close_chops_mutex(void)
+int		close_chops_mutex(t_chopstick *chops)
 {
 	unsigned long	i;
 	int				code;
 
 	i = 0;
 	code = 0;
-	while (i < (sizeof(g_chops) / sizeof(g_chops[0])))
+	while (i < PHILO_LEN)
 	{
-		code |= pthread_mutex_destroy(&g_chops[i].mutex);
+	//	pthread_mutex_unlock(g_chops[i].mutex);
+		code |= pthread_mutex_destroy(&chops[i].mutex);
 		++i;
 	}
 	return (code);
@@ -73,13 +75,16 @@ int		close_chops_mutex(void)
 
 int		main(void)
 {
-	if (init_chops() || init_philos())
+	t_philosophers		philos[PHILO_LEN];
+	t_chopstick			chops[PHILO_LEN];
+
+	if (init_chops(chops) || init_philos(chops, philos))
 	{
 		printf("init function failed\n");
 		exit(EXIT_FAILURE);
 	}
 	sleep(1);
-	if (close_chops_mutex())
+	if (close_chops_mutex(chops))
 	{
 		printf("close_mutex() failed\n");
 		exit(EXIT_FAILURE);
