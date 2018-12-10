@@ -14,80 +14,75 @@
 
 int		g_active;
 
-void	*start_dinner(void *arg)
+const char	*str_of_state(t_state state)
 {
-	const t_philosophers *philo = (t_philosophers *)arg;
+	const char *tab[3] = {
+		"EATING",
+		"THINKING",
+		"RESTING"
+	};
 
-	printf("%zu\n", philo->hp);
-	return (NULL);
+	return (tab[state]);
 }
 
-int		init_philos(t_chopstick *chops, t_philosophers *philos)
+void	decrease_life(t_philosophers *philos)
 {
 	int	i;
-	int	code;
 
-	code = 0;
-	i = 0;
-	while (i < PHILO_LEN)
-	{
-		philos[i].state = RESTING;
-		philos[i].hp = MAX_LIFE;
-		philos[i].chopstick_left = chops + i;
-		philos[i].chopstick_right = &chops[i + 1 == PHILO_LEN ? 0 : i + 1];
-		code |= pthread_create(&philos[i].thread, NULL, start_dinner, philos + i);
-		++i;
-	}
-	return (code);
+	i = -1;
+	while (++i < PHILO_LEN)
+		if (philos[i].state != EATING)
+			if (!(philos[i].hp--))
+				g_active = 0;
 }
 
-int		init_chops(t_chopstick *chops)
+void	print_philos(t_philosophers *philos)
 {
-	unsigned long	i;
-	int				code;
+	int	i;
 
-	code = 0;
-	i = 0;
-	while (i < PHILO_LEN)
+	i = -1;
+	while (++i < PHILO_LEN)
 	{
-		chops[i].philo_index = -1;
-		code |= pthread_mutex_init(&chops[i].mutex, NULL);
-		++i;
+		printf("--------------\n");
+		printf("HP: %ld\n", philos[i].hp);
+		printf("State [%s]\n", str_of_state(philos[i].state));
 	}
-	return (code);
+	printf("\n\n");
 }
 
-int		close_chops_mutex(t_chopstick *chops)
+void	run(t_philosophers *philos)
 {
-	unsigned long	i;
-	int				code;
+	struct timeval	start;
+	struct timeval	stop;
+	float 		time;
 
-	i = 0;
-	code = 0;
-	while (i < PHILO_LEN)
+	time = 0.0;
+	while (g_active)
 	{
-	//	pthread_mutex_unlock(g_chops[i].mutex);
-		code |= pthread_mutex_destroy(&chops[i].mutex);
-		++i;
+		gettimeofday(&start, NULL);
+
+		//compute
+		time += 1.0;
+		print_philos(philos);
+		decrease_life(philos);
+		//end of compute
+
+		gettimeofday(&stop, NULL);
+		sleep(1);
 	}
-	return (code);
+	read(0, NULL, 1);
 }
 
-int		main(void)
+int	main(void)
 {
 	t_philosophers		philos[PHILO_LEN];
-	t_chopstick			chops[PHILO_LEN];
+	t_chopstick		chops[PHILO_LEN];
 
 	if (init_chops(chops) || init_philos(chops, philos))
-	{
-		printf("init function failed\n");
 		exit(EXIT_FAILURE);
-	}
-	sleep(1);
+	g_active = 1;
+	run(philos);
 	if (close_chops_mutex(chops))
-	{
-		printf("close_mutex() failed\n");
 		exit(EXIT_FAILURE);
-	}
 	return (0);
 }

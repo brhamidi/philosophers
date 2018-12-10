@@ -14,12 +14,12 @@ CC	= gcc
 NAME	= philo
 CFLAGS	= -Werror -Wextra -Wall
 CFLAGS	+= -O2
-#CFLAGS	+= -pthread
+CFLAGS	+= -pthread
 
 SRC_PATH	= srcs/
 INCLUDE_PATH	= includes/
 
-OBJ		= main.o
+OBJ		= main.o threads_manager.o philos.o
 
 INCLUDE	= philosophers.h
 

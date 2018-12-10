@@ -17,16 +17,18 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <sys/time.h>
 
 # define MAX_LIFE	50
-# define EAT_T		10
-# define REST_T		8
-# define THINK_T	5
+# define EAT_T		5
+# define REST_T		10
+# define THINK_T	3
 # define TIMEOUT	120
 # define PHILO_LEN	7
 
 
-typedef enum	e_state {
+typedef enum	e_state
+{
 	EATING = 0,
 	THINKING,
 	RESTING
@@ -35,7 +37,7 @@ typedef enum	e_state {
 typedef struct	s_chopstick
 {
 	pthread_mutex_t	mutex;
-	char			philo_index;
+	char		philo_index;
 }				t_chopstick;
 
 typedef struct	s_philosophers
@@ -46,5 +48,11 @@ typedef struct	s_philosophers
 	t_chopstick	*chopstick_left;
 	t_chopstick	*chopstick_right;
 }				t_philosophers;
+
+
+void	*start_dinner(void *arg);
+int	init_philos(t_chopstick *chops, t_philosophers *philos);
+int	init_chops(t_chopstick *chops);
+int	close_chops_mutex(t_chopstick *chops);
 
 #endif
