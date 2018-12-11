@@ -6,20 +6,22 @@
 #    By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/20 19:05:42 by bhamidi           #+#    #+#              #
-#    Updated: 2018/12/10 13:13:26 by msrun            ###   ########.fr        #
+#    Updated: 2018/12/10 16:16:28 by msrun            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC	= gcc
 NAME	= philo
-CFLAGS	= -Werror -Wextra -Wall
-CFLAGS	+= -O2
+COFLAGS	= -Werror -Wextra -Wall
+COFLAGS	+= -I $$HOME/.brew/include
+COFLAGS	+= -O2
+CFLAGS	= $(COFLAGS) -L $$HOME/.brew/lib -lSDL2
 #CFLAGS	+= -pthread
 
 SRC_PATH	= srcs/
 INCLUDE_PATH	= includes/
 
-OBJ		= main.o
+OBJ		= main.o window.o
 
 INCLUDE	= philosophers.h
 
@@ -32,7 +34,7 @@ $(NAME): $(OBJS)
 	$(CC) $(OBJS) $(CFLAGS) -o $@
 
 $(SRC_PATH)%.o: $(SRC_PATH)%.c $(INCLUDES) Makefile
-	$(CC) $(CFLAGS) -I $(INCLUDE_PATH) -c $< -o $@
+	$(CC) $(COFLAGS) -I $(INCLUDE_PATH) -c $< -o $@
 
 clean:
 	rm -f $(OBJS)
