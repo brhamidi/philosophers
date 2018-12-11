@@ -13,6 +13,14 @@ void	*start_dinner(void *arg)
 	{
 		if (g_active == 0)
 			break;
+		/*
+		if (try_eat())
+		{
+			if (try_think())
+				rest();
+		}
+		rest();
+		*/
 	}
 	return (NULL);
 }
