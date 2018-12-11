@@ -20,11 +20,11 @@
 # include <SDL2/SDL.h>
 # include <sys/time.h>
 
-# define MAX_LIFE	50
-# define EAT_T		5
-# define REST_T		10
-# define THINK_T	3
-# define TIMEOUT	120
+# define MAX_LIFE	30
+# define EAT_T		1
+# define REST_T		1
+# define THINK_T	1
+# define TIMEOUT	60
 # define PHILO_LEN	7
 
 

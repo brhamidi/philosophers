@@ -22,7 +22,7 @@ int	init_philos(t_chopstick *chops, t_philosophers *philos)
 int	init_chops(t_chopstick *chops)
 {
 	unsigned long	i;
-	int				code;
+	int		code;
 
 	code = 0;
 	i = 0;
@@ -38,7 +38,7 @@ int	init_chops(t_chopstick *chops)
 int	close_chops_mutex(t_chopstick *chops)
 {
 	unsigned long	i;
-	int				code;
+	int		code;
 
 	i = 0;
 	code = 0;
