@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 15:29:14 by msrun             #+#    #+#             */
-/*   Updated: 2018/12/10 13:04:05 by msrun            ###   ########.fr       */
+/*   Updated: 2018/12/11 14:06:35 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <SDL2/SDL.h>
 # include <sys/time.h>
 
 # define MAX_LIFE	50
@@ -49,6 +50,13 @@ typedef struct	s_philosophers
 	t_chopstick	*chopstick_right;
 }				t_philosophers;
 
+typedef struct	s_sdl
+{
+	SDL_Window		*window;
+	SDL_Renderer	*renderer;
+}				t_sdl;
+
+void	renderer(t_sdl, t_philosophers*);
 
 void	*start_dinner(void *arg);
 int	init_philos(t_chopstick *chops, t_philosophers *philos);
