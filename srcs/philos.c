@@ -7,7 +7,8 @@ void	sleep_decrease(int n, int decrease, t_philosophers *philo)
 {
 	if (n > 0)
 	{
-		usleep(200000);
+		usleep(1000000);
+	//	sleep(1);
 		if (decrease)
 			if (!(--philo->hp))
 				g_active = 0;
@@ -30,9 +31,13 @@ int	eat(t_philosophers *philo)
 		pthread_mutex_unlock(& philo->chopstick_left->mutex);
 		return (1);
 	}
+	philo->chopstick_left->philo_index = 1;
+	philo->chopstick_right->philo_index = -1;
 	philo->state = EATING;
 	sleep_decrease(EAT_T, 0, philo);
 	philo->hp = MAX_LIFE;
+	philo->chopstick_left->philo_index = 0;
+	philo->chopstick_right->philo_index = 0;
 	pthread_mutex_unlock(& philo->chopstick_right->mutex);
 	pthread_mutex_unlock(& philo->chopstick_left->mutex);
 	return (0);
@@ -47,11 +52,16 @@ int	think(t_philosophers *philo)
 	{
 		if (pthread_mutex_trylock(& philo->chopstick_right->mutex))
 			return (1);
+		philo->chopstick_right->philo_index = -1;
 		mutex = & philo->chopstick_right->mutex;
 	}
+	else
+		philo->chopstick_left->philo_index = 1;
 	pthread_mutex_unlock(mutex);
 	philo->state = THINKING;
 	sleep_decrease(THINK_T, 1, philo);
+	philo->chopstick_left->philo_index = philo->chopstick_left->philo_index == 1 ? 0 : philo->chopstick_left->philo_index;
+	philo->chopstick_right->philo_index = philo->chopstick_right->philo_index == -1 ? 0 : philo->chopstick_right->philo_index;
 	return (0);
 }
 

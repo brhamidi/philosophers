@@ -6,7 +6,7 @@
 #    By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/20 19:05:42 by bhamidi           #+#    #+#              #
-#    Updated: 2018/12/11 14:06:13 by msrun            ###   ########.fr        #
+#    Updated: 2018/12/12 16:28:38 by msrun            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,8 +15,8 @@ NAME	= philo
 COFLAGS	= -Werror -Wextra -Wall
 COFLAGS	+= -I $$HOME/.brew/include
 COFLAGS	+= -O2
-CFLAGS	= $(COFLAGS) -L $$HOME/.brew/lib -lSDL2
-CFLAGS	+= -pthread
+CFLAGS	= $(COFLAGS) -L $$HOME/.brew/lib -lSDL2 -lSDL2_ttf
+#CFLAGS	+= -pthread
 
 SRC_PATH	= srcs/
 INCLUDE_PATH	= includes/

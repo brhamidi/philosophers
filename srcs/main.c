@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 15:46:42 by msrun             #+#    #+#             */
-/*   Updated: 2018/12/10 13:18:14 by msrun            ###   ########.fr       */
+/*   Updated: 2018/12/12 17:50:26 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,28 +53,50 @@ void	print_philos(t_philosophers *philos)
 	printf("\n\n");
 }
 
-void	run(t_philosophers *philos)
+void	run(t_philosophers *philos, t_chopstick *chops)
 {
 	struct timeval	start;
 	struct timeval	stop;
 	int		time;
 
+	const t_sdl		sdl = init();
+	SDL_Event		event;
+
+	(void)chops;
 	time = 0;
-	while (g_active)
+	SDL_SetRenderDrawColor(sdl.renderer, 255, 255, 255, 255);
+	SDL_RenderClear(sdl.renderer);
+	while (g_active > 0)
 	{
 		if (time > TIMEOUT)
 			break;
 		gettimeofday(&start, NULL);
 
-		print_philos(philos);
+		print_philos_sdl(sdl, philos, chops);
+//		print_philos(philos);
 		++time;
 
 		gettimeofday(&stop, NULL);
-		usleep(200000);
+		usleep(1000000);
+	//	sleep(1);
+		while (SDL_PollEvent(&event))
+			switch (event.type)
+			{
+				case SDL_QUIT:
+					g_active = -1;
+					break ;
+			}
 	}
-	if (time > TIMEOUT)
-		write(1, "SUCESS\n", 8);
-	read(0, NULL, 1);
+	print_philos_sdl(sdl, philos, chops);
+//	print_philos(philos);
+	if (g_active >= 0)
+	{
+		if (time > TIMEOUT)
+			write(1, "SUCESS\n", 8);
+		else
+			write(1, "FAILED\n", 8);
+		read(0, NULL, 1);
+	}
 }
 
 int	main(void)
@@ -85,7 +107,7 @@ int	main(void)
 	g_active = 1;
 	if (init_chops(chops) || init_philos(chops, philos))
 		exit(EXIT_FAILURE);
-	run(philos);
+	run(philos, chops);
 	if (close_chops_mutex(chops))
 		exit(EXIT_FAILURE);
 	return (0);

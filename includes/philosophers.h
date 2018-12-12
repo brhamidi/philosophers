@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 15:29:14 by msrun             #+#    #+#             */
-/*   Updated: 2018/12/11 14:06:35 by msrun            ###   ########.fr       */
+/*   Updated: 2018/12/12 17:18:33 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,10 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <SDL2/SDL.h>
+# include <SDL2/SDL_ttf.h>
 # include <sys/time.h>
 
-# define MAX_LIFE	5
+# define MAX_LIFE	7
 # define EAT_T		1
 # define REST_T		1
 # define THINK_T	1
@@ -57,7 +58,11 @@ typedef struct	s_sdl
 }				t_sdl;
 
 void	renderer(t_sdl, t_philosophers*);
+t_sdl	init();
+void	print_philos(t_philosophers*);
+void	print_philos_sdl(const t_sdl, t_philosophers*, t_chopstick*);
 
+const char	*str_of_state(t_state state);
 void	*start_dinner(void *arg);
 int	init_philos(t_chopstick *chops, t_philosophers *philos);
 int	init_chops(t_chopstick *chops);
