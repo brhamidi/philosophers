@@ -32,7 +32,7 @@ void	decrease_life(t_philosophers *philos)
 	i = -1;
 	while (++i < PHILO_LEN)
 		if (philos[i].state != EATING)
-			if (!(philos[i].hp--))
+			if (!(--philos[i].hp))
 				g_active = 0;
 }
 
@@ -44,7 +44,10 @@ void	print_philos(t_philosophers *philos)
 	while (++i < PHILO_LEN)
 	{
 		printf("--------------\n");
-		printf("HP: %ld\n", philos[i].hp);
+		if (philos[i].hp == 1)
+			printf("HP: \x1b[31m%ld\x1b[0m\n", philos[i].hp);
+		else
+			printf("HP: %ld\n", philos[i].hp);
 		printf("State [%s]\n", str_of_state(philos[i].state));
 	}
 	printf("\n\n");
@@ -54,22 +57,23 @@ void	run(t_philosophers *philos)
 {
 	struct timeval	start;
 	struct timeval	stop;
-	float 		time;
+	int		time;
 
-	time = 0.0;
+	time = 0;
 	while (g_active)
 	{
+		if (time > TIMEOUT)
+			break;
 		gettimeofday(&start, NULL);
 
-		//compute
-		time += 1.0;
 		print_philos(philos);
-		decrease_life(philos);
-		//end of compute
+		++time;
 
 		gettimeofday(&stop, NULL);
-		sleep(1);
+		usleep(200000);
 	}
+	if (time > TIMEOUT)
+		write(1, "SUCESS\n", 8);
 	read(0, NULL, 1);
 }
 
@@ -78,9 +82,9 @@ int	main(void)
 	t_philosophers		philos[PHILO_LEN];
 	t_chopstick		chops[PHILO_LEN];
 
+	g_active = 1;
 	if (init_chops(chops) || init_philos(chops, philos))
 		exit(EXIT_FAILURE);
-	g_active = 1;
 	run(philos);
 	if (close_chops_mutex(chops))
 		exit(EXIT_FAILURE);

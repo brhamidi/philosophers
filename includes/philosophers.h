@@ -20,7 +20,7 @@
 # include <SDL2/SDL.h>
 # include <sys/time.h>
 
-# define MAX_LIFE	30
+# define MAX_LIFE	5
 # define EAT_T		1
 # define REST_T		1
 # define THINK_T	1
@@ -52,7 +52,7 @@ typedef struct	s_philosophers
 
 typedef struct	s_sdl
 {
-	SDL_Window		*window;
+	SDL_Window	*window;
 	SDL_Renderer	*renderer;
 }				t_sdl;
 
