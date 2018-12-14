@@ -16,7 +16,7 @@ COFLAGS	= -Werror -Wextra -Wall
 COFLAGS	+= -I $$HOME/.brew/include
 COFLAGS	+= -O2
 CFLAGS	= $(COFLAGS) -L $$HOME/.brew/lib -lSDL2 -lSDL2_ttf
-#CFLAGS	+= -pthread
+CFLAGS	+= -pthread
 
 SRC_PATH	= srcs/
 INCLUDE_PATH	= includes/

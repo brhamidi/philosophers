@@ -67,5 +67,6 @@ void	*start_dinner(void *arg);
 int	init_philos(t_chopstick *chops, t_philosophers *philos);
 int	init_chops(t_chopstick *chops);
 int	close_chops_mutex(t_chopstick *chops);
+void	join_threads(t_philosophers *philos);
 
 #endif

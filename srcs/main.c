@@ -66,19 +66,19 @@ void	run(t_philosophers *philos, t_chopstick *chops)
 	time = 0;
 	SDL_SetRenderDrawColor(sdl.renderer, 255, 255, 255, 255);
 	SDL_RenderClear(sdl.renderer);
-	while (g_active > 0)
+	while (g_active)
 	{
 		if (time > TIMEOUT)
 			break;
 		gettimeofday(&start, NULL);
 
 		print_philos_sdl(sdl, philos, chops);
-//		print_philos(philos);
+		print_philos(philos);
 		++time;
 
 		gettimeofday(&stop, NULL);
-		usleep(1000000);
-	//	sleep(1);
+		usleep(500000);
+//		sleep(1);
 		while (SDL_PollEvent(&event))
 			switch (event.type)
 			{
@@ -88,15 +88,12 @@ void	run(t_philosophers *philos, t_chopstick *chops)
 			}
 	}
 	print_philos_sdl(sdl, philos, chops);
-//	print_philos(philos);
-	if (g_active >= 0)
-	{
-		if (time > TIMEOUT)
-			write(1, "SUCESS\n", 8);
-		else
-			write(1, "FAILED\n", 8);
-		read(0, NULL, 1);
-	}
+	print_philos(philos);
+	if (time > TIMEOUT)
+		write(1, "SUCESS\n", 8);
+	else
+		write(1, "FAILED\n", 8);
+	read(0, NULL, 1);
 }
 
 int	main(void)
@@ -110,5 +107,6 @@ int	main(void)
 	run(philos, chops);
 	if (close_chops_mutex(chops))
 		exit(EXIT_FAILURE);
+	join_threads(philos);
 	return (0);
 }
