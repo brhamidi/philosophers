@@ -7,7 +7,7 @@ void	sleep_decrease(int n, int decrease, t_philosophers *philo)
 {
 	if (n > 0)
 	{
-		usleep(1000000);
+		usleep(500000);
 	//	sleep(1);
 		if (decrease)
 			if (!(--philo->hp))
@@ -82,5 +82,6 @@ void	*start_dinner(void *arg)
 		if (think(philo))
 			rest(philo);
 	}
+	pthread_detach(philo->thread);
 	return (NULL);
 }
