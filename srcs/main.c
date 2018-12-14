@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 15:46:42 by msrun             #+#    #+#             */
-/*   Updated: 2018/12/12 17:50:26 by msrun            ###   ########.fr       */
+/*   Updated: 2018/12/14 16:10:51 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ void	run(t_philosophers *philos, t_chopstick *chops)
 	const t_sdl		sdl = init();
 	SDL_Event		event;
 
-	(void)chops;
+	if (!check_data(sdl.data))
+		return ;
 	time = 0;
 	SDL_SetRenderDrawColor(sdl.renderer, 255, 255, 255, 255);
 	SDL_RenderClear(sdl.renderer);
@@ -95,8 +96,11 @@ void	run(t_philosophers *philos, t_chopstick *chops)
 			write(1, "SUCESS\n", 8);
 		else
 			write(1, "FAILED\n", 8);
-		read(0, NULL, 1);
+		while (SDL_WaitEvent(&event) && event.type != SDL_KEYDOWN)
+			;
+
 	}
+	stop_window(sdl);
 }
 
 int	main(void)

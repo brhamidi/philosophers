@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 15:29:14 by msrun             #+#    #+#             */
-/*   Updated: 2018/12/12 17:18:33 by msrun            ###   ########.fr       */
+/*   Updated: 2018/12/14 15:48:02 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,22 @@
 # include <SDL2/SDL_ttf.h>
 # include <sys/time.h>
 
-# define MAX_LIFE	7
+# define MAX_LIFE	5
 # define EAT_T		1
 # define REST_T		1
 # define THINK_T	1
 # define TIMEOUT	60
 # define PHILO_LEN	7
 
+
+typedef enum	e_color
+{
+	WHITE = 0,
+	BLACK,
+	RED,
+	GREEN,
+	BLUE
+}				t_color;
 
 typedef enum	e_state
 {
@@ -51,16 +60,26 @@ typedef struct	s_philosophers
 	t_chopstick	*chopstick_right;
 }				t_philosophers;
 
+typedef struct	s_data
+{
+	SDL_Texture		*texture[5];
+	SDL_Texture		*texture_txt[3];
+	SDL_Color		color[5];
+}				t_data;
+
 typedef struct	s_sdl
 {
-	SDL_Window	*window;
+	SDL_Window		*window;
 	SDL_Renderer	*renderer;
+	t_data			data;
 }				t_sdl;
 
+void	stop_window(t_sdl sdl);
 void	renderer(t_sdl, t_philosophers*);
 t_sdl	init();
 void	print_philos(t_philosophers*);
 void	print_philos_sdl(const t_sdl, t_philosophers*, t_chopstick*);
+int		check_data(t_data data);
 
 const char	*str_of_state(t_state state);
 void	*start_dinner(void *arg);
