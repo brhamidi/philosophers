@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 15:46:42 by msrun             #+#    #+#             */
-/*   Updated: 2018/12/14 17:48:37 by msrun            ###   ########.fr       */
+/*   Updated: 2018/12/17 16:18:32 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,7 @@ void	run(t_philosophers *philos, t_chopstick *chops)
 		print_philos_sdl(sdl, philos, chops);
 		print_philos(philos);
 		++time;
-		usleep(500000);
-//		sleep(1);
+		sleep(1);
 		while (SDL_PollEvent(&event))
 			switch (event.type)
 			{
@@ -85,7 +84,10 @@ void	run(t_philosophers *philos, t_chopstick *chops)
 	if (g_active >= 0)
 	{
 		if (time > TIMEOUT)
+		{
 			write(1, "SUCESS\n", 8);
+			g_active = 0;
+		}
 		else
 			write(1, "FAILED\n", 8);
 		while (SDL_WaitEvent(&event) && event.type != SDL_KEYDOWN)
@@ -96,15 +98,15 @@ void	run(t_philosophers *philos, t_chopstick *chops)
 
 int	main(void)
 {
-	t_philosophers		philos[PHILO_LEN];
+	t_philosophers	philos[PHILO_LEN];
 	t_chopstick		chops[PHILO_LEN];
 
 	g_active = 1;
 	if (init_chops(chops) || init_philos(chops, philos))
 		exit(EXIT_FAILURE);
 	run(philos, chops);
+	join_threads(philos);
 	if (close_chops_mutex(chops))
 		exit(EXIT_FAILURE);
-	join_threads(philos);
 	return (0);
 }

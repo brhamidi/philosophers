@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/10 14:30:55 by msrun             #+#    #+#             */
-/*   Updated: 2018/12/14 17:43:27 by msrun            ###   ########.fr       */
+/*   Updated: 2018/12/17 16:17:06 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,10 @@ void		get_txt(t_sdl *sdl)
 
 	TTF_Init();
 	if (!(font = TTF_OpenFont("font.ttf", 10)))
+	{
+		TTF_Quit();
 		return ;
+	}
 	sdl->data.color[WHITE] = get_color(255, 255, 255, 255);
 	sdl->data.color[BLACK] = get_color(0, 0, 0, 0);
 	sdl->data.color[RED] = get_color(255, 0, 0, 255);
@@ -78,8 +81,12 @@ t_sdl		init(void)
 {
 	t_sdl	sdl;
 
-	sdl.window = SDL_CreateWindow("Philosophers", SDL_WINDOWPOS_CENTERED,
-			SDL_WINDOWPOS_CENTERED, 930, 230, 0);
+	if (PHILO_LEN <= 0)
+		sdl.window = SDL_CreateWindow("Philosophers", SDL_WINDOWPOS_CENTERED,
+				SDL_WINDOWPOS_CENTERED, 70, 10, 0);
+	else
+		sdl.window = SDL_CreateWindow("Philosophers", SDL_WINDOWPOS_CENTERED,
+				SDL_WINDOWPOS_CENTERED, 10 + 132 * PHILO_LEN, 230, 0);
 	sdl.renderer = SDL_CreateRenderer(sdl.window, -1, 0);
 	SDL_RenderPresent(sdl.renderer);
 	get_data(&sdl);
@@ -140,11 +147,14 @@ void		print_philos_sdl(const t_sdl sdl, t_philosophers *philos,
 	SDL_Rect	dstrect;
 
 	i = -1;
-	while (++i < PHILO_LEN)
-		printer(sdl, philos, chops, i);
-	dstrect = get_rect(10 + i * 130 + (chops[0].philo_index == 1 ? 30 : 0) +
-		(chops[0].philo_index == -1 ? -30 : 0), 50 +
-		(chops[0].philo_index ? 0 : 70), 10, 60);
+	if (PHILO_LEN > 0)
+	{
+		while (++i < PHILO_LEN)
+			printer(sdl, philos, chops, i);
+		dstrect = get_rect(10 + i * 130 + (chops[0].philo_index == 1 ? 30 : 0) +
+				(chops[0].philo_index == -1 ? -30 : 0), 120 +
+				(chops[0].philo_index ? 0 : -70), 10, 60);
+	}
 	SDL_RenderCopy(sdl.renderer, sdl.data.texture[3], NULL, &dstrect);
 	SDL_RenderPresent(sdl.renderer);
 	SDL_RenderClear(sdl.renderer);
