@@ -64,7 +64,7 @@ void	run(t_philosophers *philos, t_chopstick *chops)
 	time = 0;
 	SDL_SetRenderDrawColor(sdl.renderer, 255, 255, 255, 255);
 	SDL_RenderClear(sdl.renderer);
-	while (g_active)
+	while (g_active > 0)
 	{
 		if (time > TIMEOUT)
 			break;
@@ -73,12 +73,14 @@ void	run(t_philosophers *philos, t_chopstick *chops)
 		++time;
 		sleep(1);
 		while (SDL_PollEvent(&event))
-			switch (event.type)
+		{
+			if (event.type == SDL_QUIT
+					|| event.key.keysym.sym == SDLK_ESCAPE)
 			{
-				case SDL_QUIT:
-					g_active = -1;
-					break ;
+				g_active = -1;
+				break ;
 			}
+		}
 	}
 	print_philos_sdl(sdl, philos, chops);
 	if (g_active >= 0)
@@ -101,11 +103,15 @@ int	main(void)
 	t_philosophers	philos[PHILO_LEN];
 	t_chopstick		chops[PHILO_LEN];
 
+	if (PHILO_LEN > 12)
+	{
+		write(2, "PHILO_LEN too hight\n", 20);
+		exit(EXIT_SUCCESS);
+	}
 	g_active = 1;
 	if (init_chops(chops) || init_philos(chops, philos))
 		exit(EXIT_FAILURE);
 	run(philos, chops);
-	join_threads(philos);
 	if (close_chops_mutex(chops))
 		exit(EXIT_FAILURE);
 	return (0);

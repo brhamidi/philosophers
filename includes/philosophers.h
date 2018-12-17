@@ -21,11 +21,11 @@
 # include <SDL2/SDL_ttf.h>
 # include <sys/time.h>
 
-# define MAX_LIFE	5
+# define MAX_LIFE	7
 # define EAT_T		1
 # define REST_T		1
 # define THINK_T	1
-# define TIMEOUT	60
+# define TIMEOUT	10
 # define PHILO_LEN	7
 
 
@@ -86,6 +86,5 @@ void	*start_dinner(void *arg);
 int	init_philos(t_chopstick *chops, t_philosophers *philos);
 int	init_chops(t_chopstick *chops);
 int	close_chops_mutex(t_chopstick *chops);
-void	join_threads(t_philosophers *philos);
 
 #endif

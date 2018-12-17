@@ -5,7 +5,7 @@ extern int g_active;
 
 void	sleep_decrease(int n, int decrease, t_philosophers *philo)
 {
-	if (n > 0 && g_active)
+	if (g_active > 0 && n > 0)
 	{
 		sleep(1);
 		if (decrease)
@@ -69,7 +69,7 @@ void	*start_dinner(void *arg)
 	t_philosophers *philo;
 
 	philo = (t_philosophers *)arg;
-	while (g_active)
+	while (g_active > 0)
 	{
 		if (eat(philo) && eat(philo))
 		{

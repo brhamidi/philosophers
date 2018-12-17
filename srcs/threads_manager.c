@@ -49,12 +49,3 @@ int	close_chops_mutex(t_chopstick *chops)
 	}
 	return (code);
 }
-
-void	join_threads(t_philosophers *philos)
-{
-	int	i;
-
-	i = -1;
-	while (++i < PHILO_LEN)
-		pthread_join(philos[i].thread, NULL);
-}
