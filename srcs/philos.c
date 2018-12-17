@@ -71,7 +71,7 @@ void	*start_dinner(void *arg)
 	philo = (t_philosophers *)arg;
 	while (g_active > 0)
 	{
-		if (eat(philo) && eat(philo))
+		if (eat(philo) && eat(philo) && eat(philo) && eat(philo))
 		{
 			if (think(philo))
 				rest(philo);
@@ -80,6 +80,7 @@ void	*start_dinner(void *arg)
 		rest(philo);
 		if (think(philo))
 			rest(philo);
+		rest(philo);
 	}
 	pthread_detach(philo->thread);
 	return (NULL);
