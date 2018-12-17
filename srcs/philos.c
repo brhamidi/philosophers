@@ -5,10 +5,9 @@ extern int g_active;
 
 void	sleep_decrease(int n, int decrease, t_philosophers *philo)
 {
-	if (n > 0)
+	if (n > 0 && g_active)
 	{
-		usleep(500000);
-	//	sleep(1);
+		sleep(1);
 		if (decrease)
 			if (!(--philo->hp))
 				g_active = 0;

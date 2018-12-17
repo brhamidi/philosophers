@@ -44,7 +44,6 @@ int	close_chops_mutex(t_chopstick *chops)
 	code = 0;
 	while (i < PHILO_LEN)
 	{
-	//	pthread_mutex_unlock(g_chops[i].mutex);
 		code |= pthread_mutex_destroy(&chops[i].mutex);
 		++i;
 	}
