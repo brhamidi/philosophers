@@ -6,7 +6,7 @@
 #    By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/20 19:05:42 by bhamidi           #+#    #+#              #
-#    Updated: 2018/12/12 16:28:38 by msrun            ###   ########.fr        #
+#    Updated: 2018/12/18 13:05:04 by msrun            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ CFLAGS	+= -pthread
 SRC_PATH	= srcs/
 INCLUDE_PATH	= includes/
 
-OBJ		= main.o threads_manager.o philos.o window.o
+OBJ		= main.o threads_manager.o philos.o window.o window2.o
 
 INCLUDE	= philosophers.h
 

@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 15:29:14 by msrun             #+#    #+#             */
-/*   Updated: 2018/12/14 15:48:02 by msrun            ###   ########.fr       */
+/*   Updated: 2018/12/18 13:04:06 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,12 @@
 # include <SDL2/SDL_ttf.h>
 # include <sys/time.h>
 
-# define MAX_LIFE	7
+# define MAX_LIFE	10
 # define EAT_T		1
 # define REST_T		1
 # define THINK_T	1
-# define TIMEOUT	10
+# define TIMEOUT	60
 # define PHILO_LEN	7
-
 
 typedef enum	e_color
 {
@@ -48,7 +47,7 @@ typedef enum	e_state
 typedef struct	s_chopstick
 {
 	pthread_mutex_t	mutex;
-	char		philo_index;
+	char			philo_index;
 }				t_chopstick;
 
 typedef struct	s_philosophers
@@ -74,17 +73,25 @@ typedef struct	s_sdl
 	t_data			data;
 }				t_sdl;
 
-void	stop_window(t_sdl sdl);
-void	renderer(t_sdl, t_philosophers*);
-t_sdl	init();
-void	print_philos(t_philosophers*);
-void	print_philos_sdl(const t_sdl, t_philosophers*, t_chopstick*);
-int		check_data(t_data data);
+SDL_Color		get_color(unsigned char r, unsigned char g, unsigned char b,
+		unsigned char s);
+SDL_Rect		get_rect(int x, int y, int h, int w);
+void			create_use_surface(SDL_Renderer *renderer, SDL_Surface *surface,
+		SDL_Texture **texture);
+void			get_txt(t_sdl *sdl);
+void			get_data(t_sdl *sdl);
 
-const char	*str_of_state(t_state state);
-void	*start_dinner(void *arg);
-int	init_philos(t_chopstick *chops, t_philosophers *philos);
-int	init_chops(t_chopstick *chops);
-int	close_chops_mutex(t_chopstick *chops);
+void			stop_window(t_sdl sdl);
+void			renderer(t_sdl sdl, t_philosophers *philos);
+t_sdl			init(void);
+void			print_philos_sdl(const t_sdl sdl, t_philosophers *philos,
+		t_chopstick *chops);
+int				check_data(t_data data);
+
+const char		*str_of_state(t_state state);
+void			*start_dinner(void *arg);
+int				init_philos(t_chopstick *chops, t_philosophers *philos);
+int				init_chops(t_chopstick *chops);
+int				close_chops_mutex(t_chopstick *chops);
 
 #endif
