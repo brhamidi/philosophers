@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 15:46:42 by msrun             #+#    #+#             */
-/*   Updated: 2018/12/17 16:18:32 by msrun            ###   ########.fr       */
+/*   Updated: 2018/12/18 13:02:24 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ const char	*str_of_state(t_state state)
 	return (tab[state]);
 }
 
-void	decrease_life(t_philosophers *philos)
+void		decrease_life(t_philosophers *philos)
 {
 	int	i;
 
@@ -36,69 +36,47 @@ void	decrease_life(t_philosophers *philos)
 				g_active = 0;
 }
 
-void	print_philos(t_philosophers *philos)
+void		looping(t_philosophers *philos, t_chopstick *chops,
+		const t_sdl sdl)
 {
-	int	i;
+	int			time;
+	SDL_Event	event;
 
-	i = -1;
-	while (++i < PHILO_LEN)
-	{
-		printf("--------------\n");
-		if (philos[i].hp == 1)
-			printf("HP: \x1b[31m%ld\x1b[0m\n", philos[i].hp);
-		else
-			printf("HP: %ld\n", philos[i].hp);
-		printf("State [%s]\n", str_of_state(philos[i].state));
-	}
-	printf("\n\n");
-}
-
-void	run(t_philosophers *philos, t_chopstick *chops)
-{
-	int		time;
-	const t_sdl		sdl = init();
-	SDL_Event		event;
-
-	if (!check_data(sdl.data))
-		return ;
 	time = 0;
-	SDL_SetRenderDrawColor(sdl.renderer, 255, 255, 255, 255);
-	SDL_RenderClear(sdl.renderer);
-	while (g_active > 0)
+	while (g_active > 0 && time++ < TIMEOUT)
 	{
-		if (time > TIMEOUT)
-			break;
 		print_philos_sdl(sdl, philos, chops);
-		print_philos(philos);
-		++time;
 		sleep(1);
 		while (SDL_PollEvent(&event))
-		{
-			if (event.type == SDL_QUIT
-					|| event.key.keysym.sym == SDLK_ESCAPE)
-			{
+			if (event.type == SDL_QUIT || event.key.keysym.sym == SDLK_ESCAPE)
 				g_active = -1;
-				break ;
-			}
-		}
 	}
 	print_philos_sdl(sdl, philos, chops);
 	if (g_active >= 0)
 	{
 		if (time > TIMEOUT)
-		{
-			write(1, "SUCESS\n", 8);
-			g_active = 0;
-		}
+			write(1, "Now, it is time... To DAAAAAAAANCE ! ! !\n", 41);
 		else
 			write(1, "FAILED\n", 8);
+		g_active = 0;
 		while (SDL_WaitEvent(&event) && event.type != SDL_KEYDOWN)
 			;
 	}
+}
+
+void		run(t_philosophers *philos, t_chopstick *chops)
+{
+	const t_sdl	sdl = init();
+
+	if (!check_data(sdl.data))
+		return ;
+	SDL_SetRenderDrawColor(sdl.renderer, 255, 255, 255, 255);
+	SDL_RenderClear(sdl.renderer);
+	looping(philos, chops, sdl);
 	stop_window(sdl);
 }
 
-int	main(void)
+int			main(void)
 {
 	t_philosophers	philos[PHILO_LEN];
 	t_chopstick		chops[PHILO_LEN];

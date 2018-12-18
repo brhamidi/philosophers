@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   threads_manager.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/12/18 12:34:52 by msrun             #+#    #+#             */
+/*   Updated: 2018/12/18 12:35:20 by msrun            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 
 int	init_philos(t_chopstick *chops, t_philosophers *philos)
@@ -13,7 +25,8 @@ int	init_philos(t_chopstick *chops, t_philosophers *philos)
 		philos[i].hp = MAX_LIFE;
 		philos[i].chopstick_left = chops + i;
 		philos[i].chopstick_right = &chops[i + 1 == PHILO_LEN ? 0 : i + 1];
-		code |= pthread_create(&philos[i].thread, NULL, start_dinner, philos + i);
+		code |= pthread_create(&philos[i].thread, NULL, start_dinner,
+				philos + i);
 		++i;
 	}
 	return (code);
@@ -22,7 +35,7 @@ int	init_philos(t_chopstick *chops, t_philosophers *philos)
 int	init_chops(t_chopstick *chops)
 {
 	unsigned long	i;
-	int		code;
+	int				code;
 
 	code = 0;
 	i = 0;
@@ -38,7 +51,7 @@ int	init_chops(t_chopstick *chops)
 int	close_chops_mutex(t_chopstick *chops)
 {
 	unsigned long	i;
-	int		code;
+	int				code;
 
 	i = 0;
 	code = 0;
