@@ -21,7 +21,7 @@ make
 ## key learning
 
 * Parallel computing 
-* C Programming
+* C Programming (Mutex and Threads)
 * Shared resources
 
 ## Authors
