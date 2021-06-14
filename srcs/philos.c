@@ -12,6 +12,7 @@
 
 #include "philosophers.h"
 
+
 extern int g_active;
 
 void	sleep_decrease(int n, int decrease, t_philosophers *philo)

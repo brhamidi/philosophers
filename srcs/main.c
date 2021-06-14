@@ -78,18 +78,20 @@ void		run(t_philosophers *philos, t_chopstick *chops)
 
 int			main(void)
 {
-	t_philosophers	philos[PHILO_LEN];
 	t_chopstick		chops[PHILO_LEN];
+	t_philosophers	philos[PHILO_LEN];
 
 	if (PHILO_LEN > 12)
 	{
 		write(2, "PHILO_LEN too hight\n", 20);
 		exit(EXIT_SUCCESS);
+	
 	}
 	g_active = 1;
+
 	if (init_chops(chops) || init_philos(chops, philos))
 		exit(EXIT_FAILURE);
-	run(philos, chops);
+
 	if (close_chops_mutex(chops))
 		exit(EXIT_FAILURE);
 	return (0);
